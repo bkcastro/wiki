@@ -23,9 +23,13 @@
             src: url("./fonts/GraffitiFont.ttf") format("truetype");
         }
 
+        h1 {
+            z-index: 99;
+        }
+
         body { 
             text-align: center;
-            background-color: yellow; 
+            background-color: rgb(255, 255, 255); 
             margin: auto auto; 
             width: min-content;
         }
@@ -36,6 +40,7 @@
             top: 0;
             right: 0;
             width: 100%; 
+            z-index: 0;
             height: 100%
         }
 
@@ -44,7 +49,7 @@
 </head>
 <body>
    
-    <h1 style="padding-top: 50px; margin: 0 0; font-family: CustomFont4; font-size: 20px;">bkcastro</h1>
+    <h1 style="padding-top: 100px; margin: 0 0; font-family: CustomFont4; font-size: 20px;">bkcastro</h1>
     <h1 style="margin: 0 0; padding: 0 0; font-family: CustomFont3; font-size: 50px">lilgremlin</h1>
     <h1 style="margin: 0 0; padding: 0 0; font-family: CustomFont2;">Erick Castro</h1>
 
@@ -66,7 +71,7 @@
             constructor() {
                 const geometry = new THREE.PlaneGeometry(2, 2) 
                 const material = new THREE.MeshBasicMaterial({
-                    map: new THREE.TextureLoader().load(`./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`),  // `./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`
+                    map: new THREE.TextureLoader().load(`./pentagrams/penta4.png`),  // `./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`
                     transparent: true,
                 })
 
@@ -115,12 +120,31 @@
         penta2.position.y = 1/2
         //scene.add(penta2)
 
+        let mixer = null 
 
         // Load FBX Model
         const loader = new THREE.FBXLoader();
-        loader.load('skeletonAvatar.fbx', (object) => {
-            object.scale.set(0.012, 0.012, 0.012); // Adjust model scale if needed
+        loader.load('avatar.fbx', (object) => {
+            console.log('avatar', object) 
+            object.scale.set(0.0065, 0.0065, 0.0065); // Adjust model scale if needed
+           
+            // Set up AnimationMixer to control animations
+            mixer = new THREE.AnimationMixer(object);
+
+            // Store animation actions for each clip
+            const animations = {};
+            object.animations.forEach((clip) => {
+                const action = mixer.clipAction(clip);
+                animations[clip.name] = action;
+            });
+
+            console.log(animations)
+
+            const clips = ['Main|chris_cross_apple_sauce', 'Main|chillin', 'Main|pray_2', 'Main|pray_1', 'Main|godareyoureal', 'Main|on_my_knees']
+
+            animations[clips[Math.floor(Math.random()*clips.length)]].play();
             scene.add(object);
+        
         }, undefined, (error) => {
             console.error('An error happened during loading:', error);
         });
@@ -132,6 +156,7 @@
             requestAnimationFrame(animate);
 
             const elapsedTime = clock.getElapsedTime(); 
+            const delta = clock.getDelta();
 
             penta1.rotation.z =  elapsedTime / 4;
             //penta1.rotation.y = Math.sin(elapsedTime) / 4;
@@ -139,7 +164,11 @@
             penta2.rotation.z = elapsedTime / 4;
             renderer.render(scene, camera);
 
-            scene.rotation.y = elapsedTime / 15;
+            //scene.rotation.y = elapsedTime / 15;
+
+            if (mixer != null) {
+                mixer.update(delta)
+            }
         }
         animate();
 
