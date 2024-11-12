@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bkcastro</title>
+    <style>
+
+        @font-face {
+            font-family: "CustomFont1";
+            src: url("./fonts/aAnotherTag.ttf") format("truetype");
+        }
+        @font-face {
+            font-family: "CustomFont2";
+            src: url("./fonts/Mostwasted.ttf") format("truetype");
+        }
+        @font-face {
+            font-family: "CustomFont3";
+            src: url("./fonts/throwupz.ttf") format("truetype");
+        }
+        @font-face {
+            font-family: "CustomFont4";
+            src: url("./fonts/GraffitiFont.ttf") format("truetype");
+        }
+
+        body { 
+            text-align: center;
+            background-color: yellow; 
+            margin: auto auto; 
+            width: min-content;
+        }
+
+        canvas { 
+            display: block; 
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%; 
+            height: 100%
+        }
+
+        
+    </style>
+</head>
+<body>
+   
+    <h1 style="padding-top: 50px; margin: 0 0; font-family: CustomFont4; font-size: 20px;">bkcastro</h1>
+    <h1 style="margin: 0 0; padding: 0 0; font-family: CustomFont3; font-size: 50px">lilgremlin</h1>
+    <h1 style="margin: 0 0; padding: 0 0; font-family: CustomFont2;">Erick Castro</h1>
+
+    <script src=" https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.min.js "></script>
+    
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- FBX Loader -->
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/FBXLoader.js"></script>
+
+    <div class="contain">
+
+    </div>
+
+    <div></div>
+    <script>
+
+        class Pentagram extends THREE.Mesh {
+            constructor() {
+                const geometry = new THREE.PlaneGeometry(2, 2) 
+                const material = new THREE.MeshBasicMaterial({
+                    map: new THREE.TextureLoader().load(`./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`),  // `./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`
+                    transparent: true,
+                })
+
+                super(geometry, material) 
+            }
+        }
+
+        const container = document.getElementById('contain')
+        const width = window.innerWidth
+        const height = window.innerHeight
+
+        // Initialize the Scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 500);
+        camera.position.set(0, 1/2, 1.1); // Adjust camera position
+        //camera.lookAt(new THREE.Vector3(0,0,0))
+        
+        //scene.add(new THREE.AxesHelper(1))
+
+        // Renderer
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(width, height);
+        renderer.setClearColor(0x000000, 0);
+        document.body.appendChild(renderer.domElement);
+
+        const clock = new THREE.Clock(); 
+
+        // Lighting
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(5, 5, 5).normalize();
+        scene.add(light);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, .1); 
+        scene.add(ambientLight) 
+
+        
+        const penta1 = new Pentagram()
+        // plane.position.z = -1
+        penta1.scale.multiplyScalar(2)
+        penta1.position.y = -.1
+        penta1.rotation.x = -Math.PI / 2
+        scene.add(penta1)
+
+        const penta2 = new Pentagram() 
+        penta2.position.z = -1
+        penta2.position.y = 1/2
+        scene.add(penta2)
+
+
+        // Load FBX Model
+        const loader = new THREE.FBXLoader();
+        loader.load('skeletonAvatar.fbx', (object) => {
+            object.scale.set(0.012, 0.012, 0.012); // Adjust model scale if needed
+            scene.add(object);
+        }, undefined, (error) => {
+            console.error('An error happened during loading:', error);
+        });
+
+        clock.start() 
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const elapsedTime = clock.getElapsedTime(); 
+
+            penta1.rotation.z =  elapsedTime / 4;
+            //penta1.rotation.y = Math.sin(elapsedTime) / 4;
+
+            penta2.rotation.z = elapsedTime / 4;
+            renderer.render(scene, camera);
+
+            scene.rotation.y = elapsedTime / 15;
+        }
+        animate();
+
+        // Responsive resizing
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+    </script>
+</body>
+</html>
