@@ -59,6 +59,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- FBX Loader -->
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/FBXLoader.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
 
     <div class="contain">
 
@@ -88,14 +90,19 @@
         const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 500);
         camera.position.set(0, 1/2, 1.1); // Adjust camera position
         //camera.lookAt(new THREE.Vector3(0,0,0))
-        
-        //scene.add(new THREE.AxesHelper(1))
 
         // Renderer
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(width, height);
         renderer.setClearColor(0x000000, 0);
         document.body.appendChild(renderer.domElement);
+
+        // Orbit Controls
+    // const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    // controls.enableDamping = true; // Smooth the orbit motion
+    // controls.dampingFactor = 0.25;
+    // controls.screenSpacePanning = false;
+
 
         const clock = new THREE.Clock(); 
 
@@ -110,15 +117,9 @@
         
         const penta1 = new Pentagram()
         // plane.position.z = -1
-        penta1.scale.multiplyScalar(2)
-        penta1.position.y = -.1
+        penta1.scale.multiplyScalar(1)
         penta1.rotation.x = -Math.PI / 2
         scene.add(penta1)
-
-        const penta2 = new Pentagram() 
-        penta2.position.z = -1
-        penta2.position.y = 1/2
-        //scene.add(penta2)
 
         let mixer = null 
 
@@ -126,7 +127,7 @@
         const loader = new THREE.FBXLoader();
         loader.load('avatar.fbx', (object) => {
             console.log('avatar', object) 
-            object.scale.set(0.0065, 0.0065, 0.0065); // Adjust model scale if needed
+            object.scale.multiplyScalar(0.005) // Adjust model scale if needed
            
             // Set up AnimationMixer to control animations
             mixer = new THREE.AnimationMixer(object);
@@ -161,14 +162,14 @@
             penta1.rotation.z =  elapsedTime / 4;
             //penta1.rotation.y = Math.sin(elapsedTime) / 4;
 
-            penta2.rotation.z = elapsedTime / 4;
             renderer.render(scene, camera);
-
-            //scene.rotation.y = elapsedTime / 15;
 
             if (mixer != null) {
                 mixer.update(delta)
             }
+
+            // Update controls
+            // controls.update();
         }
         animate();
 
