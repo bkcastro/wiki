@@ -71,9 +71,9 @@
 
         class Pentagram extends THREE.Mesh {
             constructor() {
-                const geometry = new THREE.PlaneGeometry(2, 2) 
+                const geometry = new THREE.PlaneGeometry(1, 1) 
                 const material = new THREE.MeshBasicMaterial({
-                    map: new THREE.TextureLoader().load(`./pentagrams/penta4.png`),  // `./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`
+                    map: new THREE.TextureLoader().load(`./pentagrams/penta6.png`),  // `./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`
                     transparent: true,
                 })
 
@@ -88,7 +88,7 @@
         // Initialize the Scene
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 500);
-        camera.position.set(0, 1/2, 1.1); // Adjust camera position
+        camera.position.set(0, 0.3, 1.2); // Adjust camera position
         //camera.lookAt(new THREE.Vector3(0,0,0))
 
         // Renderer
@@ -98,10 +98,10 @@
         document.body.appendChild(renderer.domElement);
 
         // Orbit Controls
-    // const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    // controls.enableDamping = true; // Smooth the orbit motion
-    // controls.dampingFactor = 0.25;
-    // controls.screenSpacePanning = false;
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Smooth the orbit motion
+        controls.dampingFactor = 0.25;
+        controls.screenSpacePanning = false;
 
 
         const clock = new THREE.Clock(); 
@@ -113,12 +113,11 @@
 
         const ambientLight = new THREE.AmbientLight(0xffffff, .1); 
         scene.add(ambientLight) 
-
         
         const penta1 = new Pentagram()
-        // plane.position.z = -1
         penta1.scale.multiplyScalar(1)
         penta1.rotation.x = -Math.PI / 2
+        penta1.position.y = -0.2
         scene.add(penta1)
 
         let mixer = null 
@@ -128,7 +127,7 @@
         loader.load('avatar.fbx', (object) => {
             console.log('avatar', object) 
             object.scale.multiplyScalar(0.005) // Adjust model scale if needed
-           
+           object.position.y = -0.2
             // Set up AnimationMixer to control animations
             mixer = new THREE.AnimationMixer(object);
 
@@ -141,7 +140,7 @@
 
             console.log(animations)
 
-            const clips = ['Main|chris_cross_apple_sauce', 'Main|chillin', 'Main|pray_2', 'Main|pray_1', 'Main|godareyoureal', 'Main|on_my_knees']
+            const clips = ['Main|chris_cross_apple_sauce', 'Main|chris_cross_apple_sauce', 'Main|chris_cross_apple_sauce', 'Main|chillin', 'Main|pray_2', 'Main|godareyoureal', 'Main|on_my_knees']
 
             animations[clips[Math.floor(Math.random()*clips.length)]].play();
             scene.add(object);
@@ -162,6 +161,8 @@
             penta1.rotation.z =  elapsedTime / 4;
             //penta1.rotation.y = Math.sin(elapsedTime) / 4;
 
+            //scene.rotation.y = elapsedTime / 6;
+
             renderer.render(scene, camera);
 
             if (mixer != null) {
@@ -169,7 +170,7 @@
             }
 
             // Update controls
-            // controls.update();
+            controls.update();
         }
         animate();
 
