@@ -31,7 +31,8 @@
             text-align: center;
             background-color: rgb(255, 255, 255); 
             margin: auto auto; 
-            width: min-content;
+            width: fit-content;
+            font-family: Arial, Helvetica, sans-serif; 
         }
 
         canvas { 
@@ -63,6 +64,39 @@
         .icon:hover {
             background-color: black;
             cursor: pointer;
+        }
+
+        .cell {
+            flex: 1 1 200px; 
+            height: fit-content;
+            min-width: 200px; 
+            max-width: 300px; 
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: 8px;
+            text-align: left;
+            background-color: #000000ee;
+            color: rgb(255, 255, 255);
+            z-index: 0;
+        }
+
+        /* Adjust layout for smaller screens */
+        @media (max-width: 768px) {
+            .cell {
+                flex: 1 1 100%; /* Full-width cells on smaller screens */
+            }
+        }
+
+        a {
+            color: rgb(255, 255, 255);
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        ul {
+            z-index: 1;
         }
 
         
@@ -127,45 +161,56 @@
         </a>
     </div>
 
-    <div style="background-color: rgba(0, 0, 0, 0.482); padding: 20px; white-space: nowrap; overflow-x: auto;">
-        <div style="display: flex; gap: 15px; color: white;">
+    <div style="margin-top: 50px; padding: 20px;">
+        <div id="projectsDiv" style="
+        width: 100%; /* Make container responsive */
+        display: flex; 
+        flex-wrap: wrap; /* Enable wrapping for responsiveness */
+        gap: 15px; 
+        color: rgba(0, 0, 0, 0.664); 
+        justify-content: center;
+        box-sizing: border-box;">
     
             <!-- Games Category -->
-            <div class="grid-category" style="min-width: 200px; background: #222; padding: 15px; border-radius: 8px;">
+            <div class="cell">
                 <h3>Games</h3>
                 <ul>
-                    <li><a href="link-to-game1" style="color: lightblue;">Game Project 1</a></li>
-                    <li><a href="link-to-game2" style="color: lightblue;">Game Project 2</a></li>
-                    <!-- Add more game projects here -->
+                    <li>dev logs <a href="https://x.com/lunch_number" target="_blank">@lunch_number</a></li>
+                    <li><a href="https://xr-spell-caster.vercel.app/" target="_blank">xrSpellCaster (coding...)</a></li>
+                    <li><a href="https://chakra-me.vercel.app/" target="_blank">generative rasengan thing</a></li>
                 </ul>
             </div>
     
             <!-- Art Category -->
-            <div class="grid-category" style="min-width: 200px; background: #222; padding: 15px; border-radius: 8px;">
+            <div class="cell">
                 <h3>Art</h3>
                 <ul>
-                    <li><a href="link-to-art1" style="color: lightcoral;">Art Project 1</a></li>
-                    <li><a href="link-to-art2" style="color: lightcoral;">Art Project 2</a></li>
+                    <li><a href="https://xr-spells.vercel.app/" target="_blank">casting spells</a></li>
+                    <li><a href="https://xr-rat.vercel.app/" target="_blank">rat in a cage</a></li>
+                    <li><a href="https://xr-sketch.vercel.app/" target="_blank">i feel like this :)</a></li>
+                    <li><a href="https://mandelbrot-three.vercel.app/" target="_blank">mandlebrot</a></li>
+                    <li><a href="https://genuary7.vercel.app/" target="_blank">my first pentagram</a></li>
+                    <li><a href="https://webxr6.vercel.app/" target="_blank">this right here woud kill someone back in the day</a></li>
                     <!-- Add more art projects here -->
                 </ul>
             </div>
     
             <!-- Photography Category -->
-            <div class="grid-category" style="min-width: 200px; background: #222; padding: 15px; border-radius: 8px;">
+            <div class="cell">
                 <h3>Photography</h3>
                 <ul>
-                    <li><a href="link-to-photo1" style="color: lightgreen;">Photography Project 1</a></li>
-                    <li><a href="link-to-photo2" style="color: lightgreen;">Photography Project 2</a></li>
+                    <li> catch me with a camera here -> <a href='https://www.instagram.com/lilgremlin_x/' target="_blank">@liljgremin_x</a></li>
+                    <li><a href="https://bkcastro.github.io/LASKC/" target="_blank">LA:SKC i was born with fangs and my eyes burn during the day</a></li>
                     <!-- Add more photography projects here -->
                 </ul>
             </div>
     
             <!-- Web Projects Category -->
-            <div class="grid-category" style="min-width: 200px; background: #222; padding: 15px; border-radius: 8px;">
+            <div class="cell">
                 <h3>Web Projects</h3>
                 <ul>
-                    <li><a href="link-to-web1" style="color: lightyellow;">Web Project 1</a></li>
-                    <li><a href="link-to-web2" style="color: lightyellow;">Web Project 2</a></li>
+                    <li><a href="https://sylwester.tech/xrbv/" target="_blank">xrBrickView</a></li>
+                    <li><a href="https://whatitis-media.vercel.app" target="_blank">WhatitisMedia</a></li>
                     <!-- Add more web projects here -->
                 </ul>
             </div>
@@ -173,19 +218,29 @@
         </div>
     </div>
     
+    <script src=" https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.min.js "></script>
     
-    <!-- <script src=" https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.min.js "></script>
-     -->
     <!-- Three.js Library -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- FBX Loader -->
-    <!-- <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/FBXLoader.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/FBXLoader.js"></script>
     <!-- OrbitControls -->
-    <!-- <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
 
 
     <div></div>
-    <!-- <script>
+    <script>
+
+        window.addEventListener('resize', () => {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                if (window.innerWidth < 768) {
+                    cell.style.flex = '1 1 100%';
+                } else {
+                    cell.style.flex = '1 1 200px';
+                }
+            });
+        });
 
         function copyText() {
             const text = document.getElementById("text-to-copy").innerText;
@@ -250,6 +305,8 @@
 
         let mixer = null 
 
+        const projectsDiv = document.getElementById('projectsDiv')
+
         // Load FBX Model
         const loader = new THREE.FBXLoader();
         loader.load('avatar.fbx', (object) => {
@@ -268,7 +325,7 @@
 
             console.log(animations)
 
-            const clips = ['Main|chris_cross_apple_sauce', 'Main|chris_cross_apple_sauce', 'Main|chris_cross_apple_sauce', 'Main|chillin', 'Main|pray_2', 'Main|godareyoureal', 'Main|on_my_knees']
+            const clips = ['Main|chris_cross_apple_sauce', 'Main|chris_cross_apple_sauce', 'Main|chris_cross_apple_sauce', 'Main|pray_2', 'Main|godareyoureal', 'Main|on_my_knees']
 
             animations[clips[Math.floor(Math.random()*clips.length)]].play();
             scene.add(object);
@@ -286,7 +343,7 @@
             const elapsedTime = clock.getElapsedTime(); 
             const delta = clock.getDelta();
 
-            //penta1.rotation.z =  elapsedTime / 4;
+            penta1.rotation.z =  elapsedTime / 4;
             //penta1.rotation.y = Math.sin(elapsedTime) / 4;
 
             //scene.rotation.y = elapsedTime / 6;
@@ -308,8 +365,10 @@
         window.addEventListener('resize', () => {
             renderer.setSize(window.innerWidth, window.innerHeight);
             camera.aspect = window.innerWidth / window.innerHeight;
+
+            //if (window.innerWidth > 400) projectsDiv.style.width = window.innerWidth
             camera.updateProjectionMatrix();
         });
-    </script> -->
+    </script>
 </body>
 </html>
