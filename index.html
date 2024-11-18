@@ -75,7 +75,7 @@
             padding-right: 20px;
             border-radius: 8px;
             text-align: left;
-            background-color: #000000ee;
+            background-color: #000000a4;
             color: rgb(255, 255, 255);
             z-index: 0;
         }
@@ -273,6 +273,8 @@
         camera.position.set(0, 4, 1.2); // Adjust camera position
         //camera.lookAt(new THREE.Vector3(0,0,0))
 
+        let ready = false 
+
         const finalPosition = new THREE.Vector3(0, 0.2, 1.2)
 
         // Renderer
@@ -310,9 +312,9 @@
         // Load FBX Model
         const loader = new THREE.FBXLoader();
         loader.load('avatar.fbx', (object) => {
-            console.log('avatar', object) 
+        
             object.scale.multiplyScalar(0.005) // Adjust model scale if needed
-           object.position.y = -0.2
+            object.position.y = -0.2
             // Set up AnimationMixer to control animations
             mixer = new THREE.AnimationMixer(object);
 
@@ -329,6 +331,8 @@
 
             animations[clips[Math.floor(Math.random()*clips.length)]].play();
             scene.add(object);
+
+            ready = true
         
         }, undefined, (error) => {
             console.error('An error happened during loading:', error);
@@ -342,13 +346,11 @@
 
             const elapsedTime = clock.getElapsedTime(); 
             const delta = clock.getDelta();
-
-            penta1.rotation.z =  elapsedTime / 4;
-            //penta1.rotation.y = Math.sin(elapsedTime) / 4;
-
-            //scene.rotation.y = elapsedTime / 6;
-
-            camera.position.lerp(finalPosition, 0.05)
+         
+            if (ready) {
+                penta1.rotation.z =  elapsedTime / 4;
+                camera.position.lerp(finalPosition, 0.05)
+            }
 
             renderer.render(scene, camera);
 
