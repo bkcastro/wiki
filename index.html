@@ -296,7 +296,7 @@
         light.position.set(5, 5, 5).normalize();
         scene.add(light);
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, .1); 
+        const ambientLight = new THREE.AmbientLight(0xffffff, .5); 
         scene.add(ambientLight) 
         
         const penta1 = new Pentagram()
@@ -311,10 +311,11 @@
 
         // Load FBX Model
         const loader = new THREE.FBXLoader();
-        loader.load('avatar.fbx', (object) => {
+        loader.load('kaikei_v2.fbx', (object) => {
         
             object.scale.multiplyScalar(0.005) // Adjust model scale if needed
             object.position.y = -0.2
+            object.position.z = 0
             // Set up AnimationMixer to control animations
             mixer = new THREE.AnimationMixer(object);
 
@@ -327,9 +328,9 @@
 
             console.log(animations)
 
-            const clips = ['Main|chris_cross_apple_sauce', 'Main|chris_cross_apple_sauce', 'Main|chris_cross_apple_sauce', 'Main|pray_2', 'Main|godareyoureal', 'Main|on_my_knees']
+            const clips = ['chris_cross_apple_sauce', 'chris_cross_apple_sauce', 'chris_cross_apple_sauce', 'pray_2', 'godareyoureal', 'on_my_knees']
 
-            animations[clips[Math.floor(Math.random()*clips.length)]].play();
+            animations['Main|Main|Main|'+clips[Math.floor(Math.random()*clips.length)]].play();
             scene.add(object);
 
             ready = true
@@ -348,8 +349,9 @@
             const delta = clock.getDelta();
          
             if (ready) {
-                penta1.rotation.z =  elapsedTime / 4;
+                //penta1.rotation.z =  elapsedTime / 4;
                 camera.position.lerp(finalPosition, 0.05)
+                scene.rotation.y = elapsedTime / 5;
             }
 
             renderer.render(scene, camera);
