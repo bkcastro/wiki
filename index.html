@@ -11,10 +11,6 @@
     <style>
 
         @font-face {
-            font-family: "CustomFont1";
-            src: url("./fonts/aAnotherTag.ttf") format("truetype");
-        }
-        @font-face {
             font-family: "CustomFont2";
             src: url("./fonts/Mostwasted.ttf") format("truetype");
         }
@@ -103,7 +99,6 @@
             z-index: 1;
         }
 
-        
     </style>
 </head>
 <body>
@@ -260,7 +255,7 @@
             constructor() {
                 const geometry = new THREE.PlaneGeometry(1.5, 1.5) 
                 const material = new THREE.MeshBasicMaterial({
-                    map: new THREE.TextureLoader().load(`./pentagrams/penta6.png`),  // `./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`
+                    map: new THREE.TextureLoader().load(`./pentagrams/penta.png`),  // `./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`
                     transparent: true,
                 })
 
