@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bkcastro</title>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
     <style>
 
-        @font-face {
-            font-family: "CustomFont1";
-            src: url("./fonts/aAnotherTag.ttf") format("truetype");
-        }
         @font-face {
             font-family: "CustomFont2";
             src: url("./fonts/Mostwasted.ttf") format("truetype");
@@ -75,7 +75,7 @@
             padding-right: 20px;
             border-radius: 8px;
             text-align: left;
-            background-color: #000000ee;
+            background-color: #000000a4;
             color: rgb(255, 255, 255);
             z-index: 0;
         }
@@ -99,7 +99,6 @@
             z-index: 1;
         }
 
-        
     </style>
 </head>
 <body>
@@ -158,7 +157,7 @@
             </svg>
         </a>
     </div>
-
+    
     <script src=" https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.min.js "></script>
     
     <!-- Three.js Library -->
@@ -196,7 +195,7 @@
             constructor() {
                 const geometry = new THREE.PlaneGeometry(1.5, 1.5) 
                 const material = new THREE.MeshBasicMaterial({
-                    map: new THREE.TextureLoader().load(`./pentagrams/penta6.png`),  // `./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`
+                    map: new THREE.TextureLoader().load(`./pentagrams/penta.png`),  // `./pentagrams/penta${1+Math.floor(Math.random()*5)}.png`
                     transparent: true,
                 })
 
@@ -213,6 +212,8 @@
         const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 500);
         camera.position.set(0, 4, 1.2); // Adjust camera position
         //camera.lookAt(new THREE.Vector3(0,0,0))
+
+        let ready = false 
 
         const finalPosition = new THREE.Vector3(0, 0.2, 1.2)
 
@@ -235,7 +236,7 @@
         light.position.set(5, 5, 5).normalize();
         scene.add(light);
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, .1); 
+        const ambientLight = new THREE.AmbientLight(0xffffff, .5); 
         scene.add(ambientLight) 
         
         const penta1 = new Pentagram()
@@ -250,10 +251,11 @@
 
         // Load FBX Model
         const loader = new THREE.FBXLoader();
-        loader.load('avatar.fbx', (object) => {
-            console.log('avatar', object) 
+        loader.load('kaikei_v2.fbx', (object) => {
+        
             object.scale.multiplyScalar(0.005) // Adjust model scale if needed
-           object.position.y = -0.2
+            object.position.y = -0.2
+            object.position.z = 0
             // Set up AnimationMixer to control animations
             mixer = new THREE.AnimationMixer(object);
 
@@ -266,10 +268,12 @@
 
             console.log(animations)
 
-            const clips = ['Main|chris_cross_apple_sauce', 'Main|chris_cross_apple_sauce', 'Main|chris_cross_apple_sauce', 'Main|pray_2', 'Main|godareyoureal', 'Main|on_my_knees']
+            const clips = ['chris_cross_apple_sauce', 'chris_cross_apple_sauce', 'chris_cross_apple_sauce', 'pray_2', 'godareyoureal', 'on_my_knees']
 
-            animations[clips[Math.floor(Math.random()*clips.length)]].play();
+            animations['Main|Main|Main|'+clips[Math.floor(Math.random()*clips.length)]].play();
             scene.add(object);
+
+            ready = true
         
         }, undefined, (error) => {
             console.error('An error happened during loading:', error);
@@ -283,13 +287,12 @@
 
             const elapsedTime = clock.getElapsedTime(); 
             const delta = clock.getDelta();
-
-            penta1.rotation.z =  elapsedTime / 4;
-            //penta1.rotation.y = Math.sin(elapsedTime) / 4;
-
-            //scene.rotation.y = elapsedTime / 6;
-
-            camera.position.lerp(finalPosition, 0.05)
+         
+            if (ready) {
+                //penta1.rotation.z =  elapsedTime / 4;
+                camera.position.lerp(finalPosition, 0.05)
+                scene.rotation.y = elapsedTime / 5;
+            }
 
             renderer.render(scene, camera);
 
